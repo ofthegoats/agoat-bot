@@ -31,7 +31,7 @@ eventHandler event = case event of
           (return (Left $ RestCallErrorCode 0 "" ""))
           (restCall . R.CreateGlobalApplicationCommand i)
       )
-      [createApplicationCommandChatInput "mdata" "don't ask to ask macro"]
+      [createCommand dontasktoask]
     acs <- restCall (R.GetGlobalApplicationCommands i)
     case acs of -- print each command available
       Left r -> liftIO $ print r
@@ -45,8 +45,7 @@ eventHandler event = case event of
               ..
             },
         ..
-      } -> do
-      void $ restCall $ R.CreateInteractionResponse interactionId interactionToken dontasktoaskInteraction
+      } -> void $ restCall $ R.CreateInteractionResponse interactionId interactionToken $ interactionResponse dontasktoask
   _ -> return ()
 
 endHandler :: IO ()
