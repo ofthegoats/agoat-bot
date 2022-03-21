@@ -11,8 +11,8 @@ Build and run with `stack`
 
 ## TODO
 
-- [ ] help
-- [ ] whoami
+- [x] help
+- [x] whoami
 - [x] don't ask to ask
 - [ ] lmgtfy (let me google that for you)
 - [ ] documentation shortcuts
