@@ -26,6 +26,10 @@ source-repository head
 library
   exposed-modules:
       Commands
+      Commands.Command
+      Commands.DontAskToAsk
+      Commands.Help
+      Commands.WhoAmI
       Handlers
   other-modules:
       Paths_discord_macrobot
@@ -33,6 +37,7 @@ library
       src
   build-depends:
       base >=4.7 && <5
+    , containers
     , discord-haskell
     , emoji
     , text
@@ -48,6 +53,7 @@ executable discord-macrobot-exe
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , containers
     , discord-haskell
     , discord-macrobot
     , emoji
@@ -65,6 +71,7 @@ test-suite discord-macrobot-test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , containers
     , discord-haskell
     , discord-macrobot
     , emoji

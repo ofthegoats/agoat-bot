@@ -10,6 +10,7 @@ where
 
 import Commands
 import Control.Monad (void, when)
+import qualified Data.Map as M
 import qualified Data.Text as T
 import qualified Data.Text.IO as TIO
 import Discord
@@ -31,21 +32,23 @@ eventHandler event = case event of
           (return (Left $ RestCallErrorCode 0 "" ""))
           (restCall . R.CreateGlobalApplicationCommand i)
       )
-      [createCommand dontasktoask]
+      $ map createCommand globalCommandsList
     acs <- restCall (R.GetGlobalApplicationCommands i)
     case acs of -- print each command available
       Left r -> liftIO $ print r
       Right ls -> do
         mapM_ (liftIO . print) ls
-  InteractionCreate -- COMMAND mdata
+  InteractionCreate -- chat input commands
     InteractionApplicationCommand
       { interactionDataApplicationCommand =
           InteractionDataApplicationCommandChatInput
-            { interactionDataApplicationCommandName = "mdata",
+            { interactionDataApplicationCommandName = cmdname,
               ..
             },
         ..
-      } -> void $ restCall $ R.CreateInteractionResponse interactionId interactionToken $ interactionResponse dontasktoask
+      } -> case M.lookup cmdname globalCommandsMap of
+      Just cmd -> void $ restCall $ R.CreateInteractionResponse interactionId interactionToken $ interactionResponse cmd
+      _ -> undefined -- discord should make this impossible?
   _ -> return ()
 
 endHandler :: IO ()
